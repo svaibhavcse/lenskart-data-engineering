@@ -1,0 +1,159 @@
+{
+	"name": "dataflow_lenskart",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable5",
+						"type": "DatasetReference"
+					},
+					"name": "products"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable6",
+						"type": "DatasetReference"
+					},
+					"name": "customers"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable7",
+						"type": "DatasetReference"
+					},
+					"name": "stores"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable8",
+						"type": "DatasetReference"
+					},
+					"name": "transactions"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText5",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "join1"
+				},
+				{
+					"name": "join2"
+				},
+				{
+					"name": "orderDetails"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          id as string,",
+				"          {Brand Name} as string,",
+				"          Color as string,",
+				"          Occasion as string,",
+				"          Size as string,",
+				"          Width as string,",
+				"          {Model Name} as string,",
+				"          {Market Price} as string,",
+				"          {Lenskart Price} as string,",
+				"          {Offer Name} as string,",
+				"          Quantity as string,",
+				"          {Search Product Name} as string,",
+				"          Classification as string,",
+				"          {Average Ratings} as string,",
+				"          {Total No. of Ratings} as string,",
+				"          {Age Group} as string,",
+				"          {Purchase Count} as string,",
+				"          {Wishlist Count} as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> products",
+				"source(output(",
+				"          customer_id as string,",
+				"          first_name as string,",
+				"          last_name as string,",
+				"          email as string,",
+				"          phone_number as string,",
+				"          address as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> customers",
+				"source(output(",
+				"          {Store Name} as string,",
+				"          Address as string,",
+				"          Location as string,",
+				"          Timings as string,",
+				"          {Rating (reviewers)} as string,",
+				"          Phone as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> stores",
+				"source(output(",
+				"          customer_id as string,",
+				"          product_id as string,",
+				"          quantity as string,",
+				"          transaction_date as string,",
+				"          transaction_id as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> transactions",
+				"products, transactions join(id == product_id,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"join1, customers join(transactions@customer_id == customers@customer_id,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join2",
+				"join2 select(mapColumn(",
+				"          id,",
+				"          {Brand Name},",
+				"          Color,",
+				"          Size,",
+				"          Width,",
+				"          {Model Name},",
+				"          {Market Price},",
+				"          {Lenskart Price},",
+				"          Quantity = products@Quantity,",
+				"          {Average Ratings},",
+				"          {Total No. of Ratings},",
+				"          {Purchase Count},",
+				"          {Wishlist Count},",
+				"          customer_id = transactions@customer_id,",
+				"          quantity = transactions@quantity,",
+				"          transaction_date,",
+				"          transaction_id,",
+				"          first_name,",
+				"          last_name,",
+				"          email,",
+				"          phone_number,",
+				"          address",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> orderDetails",
+				"orderDetails sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1"
+			]
+		}
+	}
+}
