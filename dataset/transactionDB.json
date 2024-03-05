@@ -1,5 +1,5 @@
 {
-	"name": "AzureSqlTable8",
+	"name": "transactionDB",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureSqlDatabase1",

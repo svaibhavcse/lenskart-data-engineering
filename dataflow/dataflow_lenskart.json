@@ -13,21 +13,21 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable6",
+						"referenceName": "CustomerDB",
 						"type": "DatasetReference"
 					},
 					"name": "customers"
 				},
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable7",
+						"referenceName": "storesDB",
 						"type": "DatasetReference"
 					},
 					"name": "stores"
 				},
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable8",
+						"referenceName": "transactionDB",
 						"type": "DatasetReference"
 					},
 					"name": "transactions"
@@ -40,6 +40,20 @@
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "table_orderData",
+						"type": "DatasetReference"
+					},
+					"name": "orderOutput"
+				},
+				{
+					"dataset": {
+						"referenceName": "FactTable",
+						"type": "DatasetReference"
+					},
+					"name": "factTable"
 				}
 			],
 			"transformations": [
@@ -53,10 +67,22 @@
 					"name": "orderDetails"
 				},
 				{
-					"name": "aggregate1"
+					"name": "storesInEachLocation"
 				},
 				{
-					"name": "storesInEachLocation"
+					"name": "filterDuplicates"
+				},
+				{
+					"name": "join3"
+				},
+				{
+					"name": "join4"
+				},
+				{
+					"name": "storeID"
+				},
+				{
+					"name": "select1"
 				}
 			],
 			"scriptLines": [
@@ -155,13 +181,89 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> orderDetails",
-				"join2 aggregate({sold quantity} = max(transactions@quantity)) ~> aggregate1",
-				"stores aggregate(groupBy(Location),",
+				"storeID aggregate(groupBy(Location),",
 				"     stores = count({Store Name})) ~> storesInEachLocation",
+				"join2 select(mapColumn(",
+				"          id,",
+				"          {Brand Name},",
+				"          Color,",
+				"          Occasion,",
+				"          Size,",
+				"          Width,",
+				"          {Model Name},",
+				"          {Market Price},",
+				"          {Lenskart Price},",
+				"          {Offer Name},",
+				"          Quantity = products@Quantity,",
+				"          {Search Product Name},",
+				"          Classification,",
+				"          {Average Ratings},",
+				"          {Total No. of Ratings},",
+				"          {Age Group},",
+				"          {Purchase Count},",
+				"          {Wishlist Count},",
+				"          customer_id = transactions@customer_id,",
+				"          product_id,",
+				"          quantity_ordered = transactions@quantity,",
+				"          transaction_date,",
+				"          transaction_id,",
+				"          customer_id = customers@customer_id,",
+				"          first_name,",
+				"          last_name,",
+				"          email,",
+				"          phone_number,",
+				"          address",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> filterDuplicates",
+				"transactions, customers join(transactions@customer_id == customers@customer_id,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join3",
+				"join3, products join(product_id == id,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join4",
+				"stores keyGenerate(output(store_id as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> storeID",
+				"join4 select(mapColumn(",
+				"          product_id,",
+				"          transaction_id,",
+				"          customer_id = customers@customer_id,",
+				"          {Brand Name},",
+				"          {Lenskart Price},",
+				"          Quantity = products@Quantity,",
+				"          {Purchase Count}",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
 				"orderDetails sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"     skipDuplicateMapOutputs: true) ~> sink1",
+				"filterDuplicates sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> orderOutput",
+				"select1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> factTable"
 			]
 		}
 	}

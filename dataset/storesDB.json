@@ -1,5 +1,5 @@
 {
-	"name": "AzureSqlTable7",
+	"name": "storesDB",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureSqlDatabase1",

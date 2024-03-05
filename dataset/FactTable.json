@@ -1,5 +1,5 @@
 {
-	"name": "ProductsDB",
+	"name": "FactTable",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureSqlDatabase1",
@@ -10,8 +10,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "lk",
-			"table": "products"
+			"table": "factTable"
 		}
-	},
-	"type": "Microsoft.DataFactory/factories/datasets"
+	}
 }
