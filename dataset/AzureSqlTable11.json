@@ -1,0 +1,89 @@
+{
+	"name": "AzureSqlTable11",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Brand_Name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Color",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Occasion",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Size",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Width",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Model_Name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Market_Price",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Lenskart_Price",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Offer_Name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Quantity",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Suited_For",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Search_Product Name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Classification",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Average_Ratings",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Total_No_of_Ratings",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Purchase_Count",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wishlist_Count",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "raw",
+			"table": "products"
+		}
+	}
+}

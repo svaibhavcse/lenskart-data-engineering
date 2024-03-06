@@ -57,55 +57,6 @@
 				]
 			},
 			{
-				"name": "dataflow_lenskart",
-				"type": "ExecuteDataFlow",
-				"dependsOn": [
-					{
-						"activity": "stores",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "products",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "transaction",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "customer",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"dataflow": {
-						"referenceName": "dataflow_lenskart",
-						"type": "DataFlowReference"
-					},
-					"compute": {
-						"coreCount": 8,
-						"computeType": "General"
-					},
-					"traceLevel": "Fine"
-				}
-			},
-			{
 				"name": "products",
 				"type": "Copy",
 				"dependsOn": [],
@@ -266,6 +217,55 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "dataflow1",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "stores",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "products",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "transaction",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "customer",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "dataflow1",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
 			}
 		],
 		"annotations": [],
