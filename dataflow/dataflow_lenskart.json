@@ -58,10 +58,10 @@
 			],
 			"transformations": [
 				{
-					"name": "join1"
+					"name": "joinProductAndTransaction"
 				},
 				{
-					"name": "join2"
+					"name": "joinCustomers"
 				},
 				{
 					"name": "orderDetails"
@@ -73,19 +73,19 @@
 					"name": "filterDuplicates"
 				},
 				{
-					"name": "join3"
+					"name": "joinTransactionsAndCustomer"
 				},
 				{
-					"name": "join4"
+					"name": "joinProduct"
 				},
 				{
 					"name": "storeID"
 				},
 				{
-					"name": "select1"
+					"name": "selectColumnsFromJoinProduct"
 				},
 				{
-					"name": "select2"
+					"name": "selectColumns"
 				},
 				{
 					"name": "productDataCleansing"
@@ -155,13 +155,13 @@
 				"     joinType:'inner',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> join1",
-				"join1, customers join(transactions@customer_id == customers@customer_id,",
+				"     broadcast: 'auto')~> joinProductAndTransaction",
+				"joinProductAndTransaction, customers join(transactions@customer_id == customers@customer_id,",
 				"     joinType:'inner',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> join2",
-				"join2 select(mapColumn(",
+				"     broadcast: 'auto')~> joinCustomers",
+				"joinCustomers select(mapColumn(",
 				"          id,",
 				"          {Brand Name},",
 				"          Color,",
@@ -170,7 +170,7 @@
 				"          {Model Name},",
 				"          {Market Price},",
 				"          {Lenskart Price},",
-				"          Quantity = products@Quantity,",
+				"          Quantity = selectColumns@Quantity,",
 				"          {Average Ratings},",
 				"          {Total No. of Ratings},",
 				"          {Purchase Count},",
@@ -189,7 +189,7 @@
 				"     skipDuplicateMapOutputs: true) ~> orderDetails",
 				"storeID aggregate(groupBy(Location),",
 				"     stores = count({Store Name})) ~> storesInEachLocation",
-				"join2 select(mapColumn(",
+				"joinCustomers select(mapColumn(",
 				"          id,",
 				"          {Brand Name},",
 				"          Color,",
@@ -200,12 +200,11 @@
 				"          {Market Price},",
 				"          {Lenskart Price},",
 				"          {Offer Name},",
-				"          Quantity = products@Quantity,",
+				"          Quantity = selectColumns@Quantity,",
 				"          {Search Product Name},",
 				"          Classification,",
 				"          {Average Ratings},",
 				"          {Total No. of Ratings},",
-				"          {Age Group},",
 				"          {Purchase Count},",
 				"          {Wishlist Count},",
 				"          customer_id = transactions@customer_id,",
@@ -226,25 +225,25 @@
 				"     joinType:'inner',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> join3",
-				"join3, productDataCleansing join(product_id == id,",
+				"     broadcast: 'auto')~> joinTransactionsAndCustomer",
+				"joinTransactionsAndCustomer, productDataCleansing join(product_id == id,",
 				"     joinType:'inner',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> join4",
+				"     broadcast: 'auto')~> joinProduct",
 				"stores keyGenerate(output(store_id as long),",
 				"     startAt: 1L,",
 				"     stepValue: 1L) ~> storeID",
-				"join4 select(mapColumn(",
+				"joinProduct select(mapColumn(",
 				"          product_id,",
 				"          transaction_id,",
 				"          customer_id = customers@customer_id,",
 				"          {Lenskart Price},",
-				"          Quantity = products@Quantity,",
+				"          Quantity = selectColumns@Quantity,",
 				"          {Purchase Count}",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1",
+				"     skipDuplicateMapOutputs: true) ~> selectColumnsFromJoinProduct",
 				"products select(mapColumn(",
 				"          id,",
 				"          {Brand Name},",
@@ -265,8 +264,8 @@
 				"          {Wishlist Count}",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select2",
-				"select2 derive(Occasion = coalesce(Occasion, 'Any Occasion'),",
+				"     skipDuplicateMapOutputs: true) ~> selectColumns",
+				"selectColumns derive(Occasion = coalesce(Occasion, 'Any Occasion'),",
 				"          Color = coalesce(Color, 'Not Available'),",
 				"          {Offer Name} = coalesce({Offer Name}, 'No offer'),",
 				"          {Search Product Name} = coalesce({Search Product Name}, 'Not Available'),",
@@ -285,7 +284,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError') ~> orderOutput",
-				"select1 sink(allowSchemaDrift: true,",
+				"selectColumnsFromJoinProduct sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
 				"     insertable:true,",

@@ -82,7 +82,7 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "lk",
+			"schema": "raw",
 			"table": "products"
 		}
 	},

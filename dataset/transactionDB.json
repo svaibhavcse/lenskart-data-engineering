@@ -30,7 +30,7 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "lk",
+			"schema": "raw",
 			"table": "transaction"
 		}
 	},
