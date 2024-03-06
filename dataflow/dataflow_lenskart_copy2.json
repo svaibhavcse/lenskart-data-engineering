@@ -1,0 +1,198 @@
+{
+	"name": "dataflow_lenskart_copy2",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable5",
+						"type": "DatasetReference"
+					},
+					"name": "products"
+				},
+				{
+					"dataset": {
+						"referenceName": "CustomerDB",
+						"type": "DatasetReference"
+					},
+					"name": "customers"
+				},
+				{
+					"dataset": {
+						"referenceName": "storesDB",
+						"type": "DatasetReference"
+					},
+					"name": "stores"
+				},
+				{
+					"dataset": {
+						"referenceName": "transactionDB",
+						"type": "DatasetReference"
+					},
+					"name": "transactions"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "FactTable",
+						"type": "DatasetReference"
+					},
+					"name": "factTable"
+				}
+			],
+			"transformations": [
+				{
+					"name": "joinTransactionsAndCustomer"
+				},
+				{
+					"name": "joinProduct"
+				},
+				{
+					"name": "storeID"
+				},
+				{
+					"name": "selectColumnsFromJoinProduct"
+				},
+				{
+					"name": "productDataCleansing"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "aggregate2"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          id as string,",
+				"          Brand_Name as string,",
+				"          Color as string,",
+				"          Occasion as string,",
+				"          Size as string,",
+				"          Width as string,",
+				"          Model_Name as string,",
+				"          Market_Price as string,",
+				"          Lenskart_Price as string,",
+				"          Offer_Name as string,",
+				"          Quantity as string,",
+				"          Suited_For as string,",
+				"          {Search_Product Name} as string,",
+				"          Classification as string,",
+				"          Average_Ratings as string,",
+				"          Total_No_of_Ratings as string,",
+				"          Purchase_Count as string,",
+				"          Wishlist_Count as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> products",
+				"source(output(",
+				"          customer_id as string,",
+				"          first_name as string,",
+				"          last_name as string,",
+				"          email as string,",
+				"          phone_number as string,",
+				"          address as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> customers",
+				"source(output(",
+				"          Store_Name as string,",
+				"          Address as string,",
+				"          Location as string,",
+				"          Timings as string,",
+				"          {Rating_(reviewers)} as string,",
+				"          Phone as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> stores",
+				"source(output(",
+				"          customer_id as string,",
+				"          product_id as string,",
+				"          quantity as integer,",
+				"          transaction_date as string,",
+				"          transaction_id as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> transactions",
+				"transactions, customers join(transactions@customer_id == customers@customer_id,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> joinTransactionsAndCustomer",
+				"joinTransactionsAndCustomer, productDataCleansing join(product_id == id,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> joinProduct",
+				"stores keyGenerate(output(store_id as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> storeID",
+				"joinProduct select(mapColumn(",
+				"          product_id,",
+				"          quantity,",
+				"          transaction_id,",
+				"          customer_id = customers@customer_id,",
+				"          address,",
+				"          Market_Price,",
+				"          Lenskart_Price,",
+				"          Average_Ratings,",
+				"          Total_No_of_Ratings",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectColumnsFromJoinProduct",
+				"select1 derive(Occasion = coalesce(Occasion, 'Any Occasion'),",
+				"          Color = coalesce(Color, 'Not Available'),",
+				"          Offer_Name = coalesce(Offer_Name, 'No offer'),",
+				"          {Search_Product Name} = coalesce({Search_Product Name}, 'Not Available'),",
+				"          Size = coalesce(Size, 'Not Available')) ~> productDataCleansing",
+				"products select(mapColumn(",
+				"          id,",
+				"          Brand_Name,",
+				"          Color,",
+				"          Occasion,",
+				"          Size,",
+				"          Width,",
+				"          Model_Name,",
+				"          Market_Price,",
+				"          Lenskart_Price,",
+				"          Offer_Name,",
+				"          {Search_Product Name},",
+				"          Classification,",
+				"          Average_Ratings,",
+				"          Total_No_of_Ratings",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"selectColumnsFromJoinProduct aggregate(groupBy(product_id,",
+				"          transaction_id,",
+				"          customer_id,",
+				"          Market_Price,",
+				"          Lenskart_Price,",
+				"          Average_Ratings,",
+				"          Total_No_of_Ratings),",
+				"     quanitity = sum(quantity)) ~> aggregate2",
+				"aggregate2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> factTable"
+			]
+		}
+	}
+}

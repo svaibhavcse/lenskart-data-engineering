@@ -36,80 +36,6 @@
 					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"name": "Store Name",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "Store Name",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
-									"name": "Address",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "Address",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
-									"name": "Location",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "Location",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
-									"name": "Timings",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "Timings",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
-									"name": "Rating (reviewers)",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "Rating (reviewers)",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
-									"name": "Phone",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "Phone",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							}
-						],
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
@@ -295,14 +221,7 @@
 			{
 				"name": "Stores in each location",
 				"type": "Lookup",
-				"dependsOn": [
-					{
-						"activity": "dataflow_lenskart",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -326,65 +245,9 @@
 				}
 			},
 			{
-				"name": "dataflow_lenskart",
-				"type": "ExecuteDataFlow",
-				"dependsOn": [
-					{
-						"activity": "stores",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "products",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "transaction",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "customer",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"dataflow": {
-						"referenceName": "dataflow_lenskart",
-						"type": "DataFlowReference"
-					},
-					"compute": {
-						"coreCount": 8,
-						"computeType": "General"
-					},
-					"traceLevel": "Fine"
-				}
-			},
-			{
 				"name": "product sold most",
 				"type": "Lookup",
-				"dependsOn": [
-					{
-						"activity": "dataflow_lenskart",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -432,6 +295,55 @@
 						"referenceName": "table_orderData",
 						"type": "DatasetReference"
 					}
+				}
+			},
+			{
+				"name": "dataflow_lenskart_copy2",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "products",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "transaction",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "customer",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "stores",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "dataflow_lenskart_copy2",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
 				}
 			}
 		],
