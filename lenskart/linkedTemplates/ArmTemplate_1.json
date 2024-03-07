@@ -13,61 +13,7 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/source_stores')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_webscrapping",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "lenskart_stores.csv",
-						"folderPath": "Source",
-						"container": "lenskartdata"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/soruce_products')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_webscrapping",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "products_dataframe.csv",
-						"folderPath": "Source",
-						"container": "lenskartdata"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/prep_products')]",
+			"name": "[concat(parameters('factoryName'), '/sql_insights_lowRatedStores')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -79,14 +25,150 @@
 				"type": "AzureSqlTable",
 				"schema": [],
 				"typeProperties": {
-					"schema": "prep",
+					"schema": "insights",
+					"table": "lowRatedStores"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/sql_raw_customers')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "customer_id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "first_name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "last_name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "email",
+						"type": "nvarchar"
+					},
+					{
+						"name": "phone_number",
+						"type": "nvarchar"
+					},
+					{
+						"name": "address",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "raw",
+					"table": "customer"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/sql_raw_products')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Brand_Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Color",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Occasion",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Size",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Width",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Model_Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Market_Price",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Lenskart_Price",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Offer_Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Quantity",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Suited_For",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Search_Product Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Classification",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Average_Ratings",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Total_No_of_Ratings",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Purchase_Count",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Wishlist_Count",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "raw",
 					"table": "products"
 				}
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/prep_customers')]",
+			"name": "[concat(parameters('factoryName'), '/sql_raw_stores')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -96,16 +178,41 @@
 				},
 				"annotations": [],
 				"type": "AzureSqlTable",
-				"schema": [],
+				"schema": [
+					{
+						"name": "Store_Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Address",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Location",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Timings",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Rating_(reviewers)",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Phone",
+						"type": "nvarchar"
+					}
+				],
 				"typeProperties": {
-					"schema": "prep",
-					"table": "customers"
+					"schema": "raw",
+					"table": "stores"
 				}
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/prep_transactions')]",
+			"name": "[concat(parameters('factoryName'), '/sql_raw_transactions')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -115,13 +222,185 @@
 				},
 				"annotations": [],
 				"type": "AzureSqlTable",
-				"schema": [],
+				"schema": [
+					{
+						"name": "customer_id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "product_id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "quantity",
+						"type": "nvarchar"
+					},
+					{
+						"name": "transaction_date",
+						"type": "nvarchar"
+					},
+					{
+						"name": "transaction_id",
+						"type": "nvarchar"
+					}
+				],
 				"typeProperties": {
-					"schema": "prep",
+					"schema": "raw",
 					"table": "transaction"
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow_cleansing')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "sql_raw_products",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						},
+						{
+							"dataset": {
+								"referenceName": "sql_raw_customers",
+								"type": "DatasetReference"
+							},
+							"name": "source2"
+						},
+						{
+							"dataset": {
+								"referenceName": "sql_raw_transactions",
+								"type": "DatasetReference"
+							},
+							"name": "source3"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "prep_products",
+								"type": "DatasetReference"
+							},
+							"name": "sinkProducts"
+						},
+						{
+							"dataset": {
+								"referenceName": "prep_customers",
+								"type": "DatasetReference"
+							},
+							"name": "sinkCustomers"
+						},
+						{
+							"dataset": {
+								"referenceName": "prep_transactions",
+								"type": "DatasetReference"
+							},
+							"name": "sinkTransactions"
+						}
+					],
+					"transformations": [
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          id as string,",
+						"          Brand_Name as string,",
+						"          Color as string,",
+						"          Occasion as string,",
+						"          Size as string,",
+						"          Width as string,",
+						"          Model_Name as string,",
+						"          Market_Price as string,",
+						"          Lenskart_Price as string,",
+						"          Offer_Name as string,",
+						"          Quantity as string,",
+						"          Suited_For as string,",
+						"          {Search_Product Name} as string,",
+						"          Classification as string,",
+						"          Average_Ratings as string,",
+						"          Total_No_of_Ratings as string,",
+						"          Purchase_Count as string,",
+						"          Wishlist_Count as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> source1",
+						"source(output(",
+						"          customer_id as string,",
+						"          first_name as string,",
+						"          last_name as string,",
+						"          email as string,",
+						"          phone_number as string,",
+						"          address as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> source2",
+						"source(output(",
+						"          customer_id as string,",
+						"          product_id as string,",
+						"          quantity as string,",
+						"          transaction_date as string,",
+						"          transaction_id as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> source3",
+						"source1 derive(Occasion = coalesce(Occasion,'Any Occasion',Occasion),",
+						"          Color = coalesce(Color,'No Color Available',Color),",
+						"          Size = coalesce(Size,'No Size Available',Size),",
+						"          Width = coalesce(Width,'No Width Available',Width),",
+						"          Offer_Name = coalesce(Offer_Name,'No Offer',Offer_Name),",
+						"          Suited_For = coalesce(Suited_For,'Any age group',Suited_For)) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sinkProducts",
+						"source2 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sinkCustomers",
+						"source3 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sinkTransactions"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/sql_raw_products')]",
+				"[concat(variables('factoryId'), '/datasets/sql_raw_customers')]",
+				"[concat(variables('factoryId'), '/datasets/sql_raw_transactions')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/dataflow_insights')]",
@@ -163,84 +442,84 @@
 					"sinks": [
 						{
 							"dataset": {
-								"referenceName": "AzureSqlTable13",
+								"referenceName": "sql_insights_TopRatedStores",
 								"type": "DatasetReference"
 							},
 							"name": "TopRatedSink"
 						},
 						{
 							"dataset": {
-								"referenceName": "AzureSqlTable14",
+								"referenceName": "sql_insights_TopSellingClassifications",
 								"type": "DatasetReference"
 							},
 							"name": "sink2"
 						},
 						{
 							"dataset": {
-								"referenceName": "AzureSqlTable15",
+								"referenceName": "sql_insights_LowStockProducts",
 								"type": "DatasetReference"
 							},
 							"name": "sink3"
 						},
 						{
 							"dataset": {
-								"referenceName": "AzureSqlTable16",
+								"referenceName": "sql_insights_CustomersWithMaxPurchase",
 								"type": "DatasetReference"
 							},
 							"name": "sink4"
 						},
 						{
 							"dataset": {
-								"referenceName": "AzureSqlTable17",
+								"referenceName": "sql_insights_TopBuyers",
 								"type": "DatasetReference"
 							},
 							"name": "sink5"
 						},
 						{
 							"dataset": {
-								"referenceName": "AzureSqlTable18",
+								"referenceName": "sql_insights_RevenuePerYear",
 								"type": "DatasetReference"
 							},
 							"name": "sink6"
 						},
 						{
 							"dataset": {
-								"referenceName": "AzureSqlTable19",
+								"referenceName": "sql_insights_TotalRevenueYearAndCategory",
 								"type": "DatasetReference"
 							},
 							"name": "sink7"
 						},
 						{
 							"dataset": {
-								"referenceName": "AzureSqlTable20",
+								"referenceName": "sql_insights_LowSellingProducts",
 								"type": "DatasetReference"
 							},
 							"name": "sink8"
 						},
 						{
 							"dataset": {
-								"referenceName": "AzureSqlTable21",
+								"referenceName": "sql_insights_TopRatedProducts",
 								"type": "DatasetReference"
 							},
 							"name": "sink9"
 						},
 						{
 							"dataset": {
-								"referenceName": "AzureSqlTable22",
+								"referenceName": "sql_insights_lowRatedStores",
 								"type": "DatasetReference"
 							},
 							"name": "sink10"
 						},
 						{
 							"dataset": {
-								"referenceName": "AzureSqlTable23",
+								"referenceName": "sql_insights_avgRatingLocation",
 								"type": "DatasetReference"
 							},
 							"name": "sink11"
 						},
 						{
 							"dataset": {
-								"referenceName": "AzureSqlTable24",
+								"referenceName": "sql_insights_MostValuableCustomers",
 								"type": "DatasetReference"
 							},
 							"name": "sink12"
@@ -570,158 +849,12 @@
 					]
 				}
 			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/dataflow_cleansing')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "sql_raw_products",
-								"type": "DatasetReference"
-							},
-							"name": "source1"
-						},
-						{
-							"dataset": {
-								"referenceName": "sql_raw_customers",
-								"type": "DatasetReference"
-							},
-							"name": "source2"
-						},
-						{
-							"dataset": {
-								"referenceName": "sql_raw_transactions",
-								"type": "DatasetReference"
-							},
-							"name": "source3"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "prep_products",
-								"type": "DatasetReference"
-							},
-							"name": "sinkProducts"
-						},
-						{
-							"dataset": {
-								"referenceName": "prep_customers",
-								"type": "DatasetReference"
-							},
-							"name": "sinkCustomers"
-						},
-						{
-							"dataset": {
-								"referenceName": "prep_transactions",
-								"type": "DatasetReference"
-							},
-							"name": "sinkTransactions"
-						}
-					],
-					"transformations": [
-						{
-							"name": "derivedColumn1"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          id as string,",
-						"          Brand_Name as string,",
-						"          Color as string,",
-						"          Occasion as string,",
-						"          Size as string,",
-						"          Width as string,",
-						"          Model_Name as string,",
-						"          Market_Price as string,",
-						"          Lenskart_Price as string,",
-						"          Offer_Name as string,",
-						"          Quantity as string,",
-						"          Suited_For as string,",
-						"          {Search_Product Name} as string,",
-						"          Classification as string,",
-						"          Average_Ratings as string,",
-						"          Total_No_of_Ratings as string,",
-						"          Purchase_Count as string,",
-						"          Wishlist_Count as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> source1",
-						"source(output(",
-						"          customer_id as string,",
-						"          first_name as string,",
-						"          last_name as string,",
-						"          email as string,",
-						"          phone_number as string,",
-						"          address as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> source2",
-						"source(output(",
-						"          customer_id as string,",
-						"          product_id as string,",
-						"          quantity as string,",
-						"          transaction_date as string,",
-						"          transaction_id as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> source3",
-						"source1 derive(Occasion = \r",
-						"coalesce(Occasion,'Any Occasion',Occasion),",
-						"          Color = coalesce(Color,'No Color Available',Color),",
-						"          Size = coalesce(Size,'No Size Available',Size),",
-						"          Width = coalesce(Width,'No Width Available',Width),",
-						"          Offer_Name = coalesce(Offer_Name,'No Offer',Offer_Name),",
-						"          Suited_For = coalesce(Suited_For,'Any age group',Suited_For)) ~> derivedColumn1",
-						"derivedColumn1 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     deletable:false,",
-						"     insertable:true,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     format: 'table',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError') ~> sinkProducts",
-						"source2 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     deletable:false,",
-						"     insertable:true,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     format: 'table',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError') ~> sinkCustomers",
-						"source3 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     deletable:false,",
-						"     insertable:true,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     format: 'table',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError') ~> sinkTransactions"
-					]
-				}
-			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/prep_products')]",
-				"[concat(variables('factoryId'), '/datasets/prep_customers')]",
-				"[concat(variables('factoryId'), '/datasets/prep_transactions')]"
+				"[concat(variables('factoryId'), '/datasets/sql_raw_transactions')]",
+				"[concat(variables('factoryId'), '/datasets/sql_raw_products')]",
+				"[concat(variables('factoryId'), '/datasets/sql_raw_stores')]",
+				"[concat(variables('factoryId'), '/datasets/sql_raw_customers')]",
+				"[concat(variables('factoryId'), '/datasets/sql_insights_lowRatedStores')]"
 			]
 		},
 		{
@@ -1082,8 +1215,10 @@
 				"lastPublishTime": "2024-03-05T12:30:07Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/source_stores')]",
-				"[concat(variables('factoryId'), '/datasets/soruce_products')]",
+				"[concat(variables('factoryId'), '/datasets/sql_raw_stores')]",
+				"[concat(variables('factoryId'), '/datasets/sql_raw_products')]",
+				"[concat(variables('factoryId'), '/datasets/sql_raw_transactions')]",
+				"[concat(variables('factoryId'), '/datasets/sql_raw_customers')]",
 				"[concat(variables('factoryId'), '/dataflows/dataflow_insights')]",
 				"[concat(variables('factoryId'), '/dataflows/dataflow_cleansing')]"
 			]
