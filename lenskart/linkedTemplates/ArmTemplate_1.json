@@ -13,363 +13,7 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlTable3')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabase1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "lk",
-					"table": "transaction"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlTable4')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabase1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "lk",
-					"table": "customer"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlTable5')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabase1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Brand Name",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Color",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Occasion",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Size",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Width",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Model Name",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Market Price",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Lenskart Price",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Offer Name",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Quantity",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Search Product Name",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Classification",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Average Ratings",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Total No. of Ratings",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Age Group",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Purchase Count",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Wishlist Count",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "lk",
-					"table": "products"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlTable6')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabase1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "customer_id",
-						"type": "nvarchar"
-					},
-					{
-						"name": "first_name",
-						"type": "nvarchar"
-					},
-					{
-						"name": "last_name",
-						"type": "nvarchar"
-					},
-					{
-						"name": "email",
-						"type": "nvarchar"
-					},
-					{
-						"name": "phone_number",
-						"type": "nvarchar"
-					},
-					{
-						"name": "address",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "lk",
-					"table": "customer"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlTable7')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabase1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "Store Name",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Address",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Location",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Timings",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Rating (reviewers)",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Phone",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "lk",
-					"table": "stores"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlTable8')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabase1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "customer_id",
-						"type": "nvarchar"
-					},
-					{
-						"name": "product_id",
-						"type": "nvarchar"
-					},
-					{
-						"name": "quantity",
-						"type": "nvarchar"
-					},
-					{
-						"name": "transaction_date",
-						"type": "nvarchar"
-					},
-					{
-						"name": "transaction_id",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "lk",
-					"table": "transaction"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlTable9')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabase1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "product_id",
-						"type": "nvarchar"
-					},
-					{
-						"name": "transaction_id",
-						"type": "nvarchar"
-					},
-					{
-						"name": "customer_id",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Lenskart Price",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Quantity",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Purchase Count",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "staging",
-					"table": "factTable"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DelimitedText2')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_webscrapping",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "transactions.csv",
-						"folderPath": "Source",
-						"container": "lenskartdata"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DelimitedText3')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_webscrapping",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "customers.csv",
-						"folderPath": "Source",
-						"container": "lenskartdata"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DelimitedText4')]",
+			"name": "[concat(parameters('factoryName'), '/source_stores')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -396,34 +40,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DelimitedText5')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_webscrapping",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "orderdetails.csv",
-						"folderPath": "output",
-						"container": "lenskartdata"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/products')]",
+			"name": "[concat(parameters('factoryName'), '/soruce_products')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -459,28 +76,28 @@
 					"sources": [
 						{
 							"dataset": {
-								"referenceName": "AzureSqlTable10",
+								"referenceName": "sql_raw_transactions",
 								"type": "DatasetReference"
 							},
 							"name": "transaction"
 						},
 						{
 							"dataset": {
-								"referenceName": "AzureSqlTable11",
+								"referenceName": "sql_raw_products",
 								"type": "DatasetReference"
 							},
 							"name": "product"
 						},
 						{
 							"dataset": {
-								"referenceName": "AzureSqlTable12",
+								"referenceName": "sql_raw_stores",
 								"type": "DatasetReference"
 							},
 							"name": "stores"
 						},
 						{
 							"dataset": {
-								"referenceName": "AzureSqlTable25",
+								"referenceName": "sql_raw_customers",
 								"type": "DatasetReference"
 							},
 							"name": "customers"
@@ -899,161 +516,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/dataflow_lenskart')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "AzureSqlTable5",
-								"type": "DatasetReference"
-							},
-							"name": "products"
-						},
-						{
-							"dataset": {
-								"referenceName": "AzureSqlTable6",
-								"type": "DatasetReference"
-							},
-							"name": "customers"
-						},
-						{
-							"dataset": {
-								"referenceName": "AzureSqlTable7",
-								"type": "DatasetReference"
-							},
-							"name": "stores"
-						},
-						{
-							"dataset": {
-								"referenceName": "AzureSqlTable8",
-								"type": "DatasetReference"
-							},
-							"name": "transactions"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DelimitedText5",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						}
-					],
-					"transformations": [
-						{
-							"name": "join1"
-						},
-						{
-							"name": "join2"
-						},
-						{
-							"name": "orderDetails"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          id as string,",
-						"          {Brand Name} as string,",
-						"          Color as string,",
-						"          Occasion as string,",
-						"          Size as string,",
-						"          Width as string,",
-						"          {Model Name} as string,",
-						"          {Market Price} as string,",
-						"          {Lenskart Price} as string,",
-						"          {Offer Name} as string,",
-						"          Quantity as string,",
-						"          {Search Product Name} as string,",
-						"          Classification as string,",
-						"          {Average Ratings} as string,",
-						"          {Total No. of Ratings} as string,",
-						"          {Age Group} as string,",
-						"          {Purchase Count} as string,",
-						"          {Wishlist Count} as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> products",
-						"source(output(",
-						"          customer_id as string,",
-						"          first_name as string,",
-						"          last_name as string,",
-						"          email as string,",
-						"          phone_number as string,",
-						"          address as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> customers",
-						"source(output(",
-						"          {Store Name} as string,",
-						"          Address as string,",
-						"          Location as string,",
-						"          Timings as string,",
-						"          {Rating (reviewers)} as string,",
-						"          Phone as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> stores",
-						"source(output(",
-						"          customer_id as string,",
-						"          product_id as string,",
-						"          quantity as string,",
-						"          transaction_date as string,",
-						"          transaction_id as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> transactions",
-						"products, transactions join(id == product_id,",
-						"     joinType:'inner',",
-						"     matchType:'exact',",
-						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> join1",
-						"join1, customers join(transactions@customer_id == customers@customer_id,",
-						"     joinType:'inner',",
-						"     matchType:'exact',",
-						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> join2",
-						"join2 select(mapColumn(",
-						"          id,",
-						"          {Lenskart Price},",
-						"          Quantity = products@Quantity,",
-						"          {Average Ratings},",
-						"          {Total No. of Ratings},",
-						"          {Purchase Count},",
-						"          {Wishlist Count},",
-						"          customer_id = transactions@customer_id,",
-						"          quantity = transactions@quantity",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> orderDetails",
-						"orderDetails sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> sink1"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/AzureSqlTable5')]",
-				"[concat(variables('factoryId'), '/datasets/AzureSqlTable6')]",
-				"[concat(variables('factoryId'), '/datasets/AzureSqlTable7')]",
-				"[concat(variables('factoryId'), '/datasets/AzureSqlTable8')]",
-				"[concat(variables('factoryId'), '/datasets/DelimitedText5')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/masterPipeline')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1062,6 +524,8 @@
 					{
 						"name": "stores",
 						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -1102,14 +566,14 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "DelimitedText4",
+								"referenceName": "source_stores",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "AzureSqlTable1",
+								"referenceName": "sql_raw_stores",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -1118,6 +582,8 @@
 					{
 						"name": "products",
 						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -1158,14 +624,14 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "products",
+								"referenceName": "soruce_products",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "AzureSqlTable2",
+								"referenceName": "sql_raw_products",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -1174,6 +640,8 @@
 					{
 						"name": "transaction",
 						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -1214,14 +682,14 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "DelimitedText2",
+								"referenceName": "source_transcations",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "AzureSqlTable3",
+								"referenceName": "sql_raw_transactions",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -1230,6 +698,8 @@
 					{
 						"name": "customer",
 						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -1270,14 +740,14 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "DelimitedText3",
+								"referenceName": "source_customers",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "AzureSqlTable4",
+								"referenceName": "sql_raw_customers",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -1286,6 +756,8 @@
 					{
 						"name": "dataflow_insights",
 						"type": "ExecuteDataFlow",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [
 							{
 								"activity": "stores",
@@ -1360,12 +832,8 @@
 				"lastPublishTime": "2024-03-05T12:30:07Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DelimitedText4')]",
-				"[concat(variables('factoryId'), '/datasets/products')]",
-				"[concat(variables('factoryId'), '/datasets/DelimitedText2')]",
-				"[concat(variables('factoryId'), '/datasets/AzureSqlTable3')]",
-				"[concat(variables('factoryId'), '/datasets/DelimitedText3')]",
-				"[concat(variables('factoryId'), '/datasets/AzureSqlTable4')]",
+				"[concat(variables('factoryId'), '/datasets/source_stores')]",
+				"[concat(variables('factoryId'), '/datasets/soruce_products')]",
 				"[concat(variables('factoryId'), '/dataflows/dataflow_insights')]"
 			]
 		}
