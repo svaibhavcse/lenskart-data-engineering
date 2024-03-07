@@ -1,5 +1,5 @@
 {
-	"name": "AzureSqlTable10",
+	"name": "sql_raw_transactions",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureSqlDatabase1",

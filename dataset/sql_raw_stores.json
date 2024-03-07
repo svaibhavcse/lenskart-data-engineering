@@ -1,5 +1,5 @@
 {
-	"name": "AzureSqlTable12",
+	"name": "sql_raw_stores",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureSqlDatabase1",
