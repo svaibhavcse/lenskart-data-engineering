@@ -251,7 +251,7 @@
 						]
 					},
 					{
-						"name": "dataflow1",
+						"name": "dataflow_insights",
 						"type": "ExecuteDataFlow",
 						"dependsOn": [
 							{
@@ -289,13 +289,14 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataflow": {
-								"referenceName": "dataflow1",
+								"referenceName": "dataflow_insights",
 								"type": "DataFlowReference",
 								"parameters": {},
 								"datasetParameters": {
 									"transaction": {},
 									"product": {},
 									"stores": {},
+									"customers": {},
 									"TopRatedSink": {},
 									"sink2": {},
 									"sink3": {},
@@ -303,7 +304,11 @@
 									"sink5": {},
 									"sink6": {},
 									"sink7": {},
-									"sink8": {}
+									"sink8": {},
+									"sink9": {},
+									"sink10": {},
+									"sink11": {},
+									"sink12": {}
 								}
 							},
 							"staging": {},
@@ -330,7 +335,7 @@
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable3')]",
 				"[concat(variables('factoryId'), '/datasets/DelimitedText3')]",
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable4')]",
-				"[concat(variables('factoryId'), '/dataflows/dataflow1')]"
+				"[concat(variables('factoryId'), '/dataflows/dataflow_insights')]"
 			]
 		},
 		{
@@ -719,6 +724,136 @@
 				"typeProperties": {
 					"schema": "insights",
 					"table": "LowSellingProducts"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable21')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "insights",
+					"table": "TopRatedProducts"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable22')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "insights",
+					"table": "lowRatedStores"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable23')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "insights",
+					"table": "avgRatingLocation"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable24')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "insights",
+					"table": "MostValuableCustomers"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable25')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "customer_id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "first_name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "last_name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "email",
+						"type": "nvarchar"
+					},
+					{
+						"name": "phone_number",
+						"type": "nvarchar"
+					},
+					{
+						"name": "address",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "raw",
+					"table": "customer"
 				}
 			},
 			"dependsOn": [
@@ -1213,7 +1348,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
+			"name": "[concat(parameters('factoryName'), '/dataflow_insights')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1240,6 +1375,13 @@
 								"type": "DatasetReference"
 							},
 							"name": "stores"
+						},
+						{
+							"dataset": {
+								"referenceName": "AzureSqlTable25",
+								"type": "DatasetReference"
+							},
+							"name": "customers"
 						}
 					],
 					"sinks": [
@@ -1298,6 +1440,34 @@
 								"type": "DatasetReference"
 							},
 							"name": "sink8"
+						},
+						{
+							"dataset": {
+								"referenceName": "AzureSqlTable21",
+								"type": "DatasetReference"
+							},
+							"name": "sink9"
+						},
+						{
+							"dataset": {
+								"referenceName": "AzureSqlTable22",
+								"type": "DatasetReference"
+							},
+							"name": "sink10"
+						},
+						{
+							"dataset": {
+								"referenceName": "AzureSqlTable23",
+								"type": "DatasetReference"
+							},
+							"name": "sink11"
+						},
+						{
+							"dataset": {
+								"referenceName": "AzureSqlTable24",
+								"type": "DatasetReference"
+							},
+							"name": "sink12"
 						}
 					],
 					"transformations": [
@@ -1338,7 +1508,31 @@
 							"name": "TopRatedStore"
 						},
 						{
+							"name": "TopSellingCategoryWise"
+						},
+						{
+							"name": "TopRatedProducts"
+						},
+						{
+							"name": "StoresWithLowRating"
+						},
+						{
+							"name": "sort1"
+						},
+						{
+							"name": "sort2"
+						},
+						{
 							"name": "aggregate3"
+						},
+						{
+							"name": "sort3"
+						},
+						{
+							"name": "aggregate4"
+						},
+						{
+							"name": "mostValuableCustomers"
 						}
 					],
 					"scriptLines": [
@@ -1389,6 +1583,18 @@
 						"     validateSchema: false,",
 						"     isolationLevel: 'READ_UNCOMMITTED',",
 						"     format: 'table') ~> stores",
+						"source(output(",
+						"          customer_id as string,",
+						"          first_name as string,",
+						"          last_name as string,",
+						"          email as string,",
+						"          phone_number as string,",
+						"          address as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> customers",
 						"transaction, product join(product_id == id,",
 						"     joinType:'inner',",
 						"     matchType:'exact',",
@@ -1427,8 +1633,25 @@
 						"product aggregate(groupBy(Classification),",
 						"     Brand_Name = min(Brand_Name),",
 						"          Model_Name = min(Model_Name),",
-						"          Purchase_Count = min(Purchase_Count)) ~> aggregate3",
-						"TopRatedStore sink(allowSchemaDrift: true,",
+						"          Purchase_Count = min(Purchase_Count)) ~> TopSellingCategoryWise",
+						"product aggregate(groupBy(Classification),",
+						"     Brand_Name = max(Brand_Name),",
+						"          Model_Name = max(Model_Name),",
+						"          Top_Rated_Products = max(Average_Ratings),",
+						"          Total_No_of_Ratings = max(Total_No_of_Ratings)) ~> TopRatedProducts",
+						"derivedColumn2 aggregate(groupBy(Location),",
+						"     low_rated_stores = min(rating),",
+						"          Store_Name = min(Store_Name),",
+						"          Address = min(Address)) ~> StoresWithLowRating",
+						"StoresWithLowRating sort(asc(low_rated_stores, true)) ~> sort1",
+						"TopRatedStore sort(desc(rating, true)) ~> sort2",
+						"derivedColumn2 aggregate(groupBy(Location),",
+						"     Average_rating = round(avg(rating), 2)) ~> aggregate3",
+						"aggregate3 sort(asc(Average_rating, true)) ~> sort3",
+						"join2 aggregate(groupBy(customer_id),",
+						"     purchased_amount = sum(transaction@quantity * Lenskart_Price)) ~> aggregate4",
+						"aggregate4 sort(desc(purchased_amount, true)) ~> mostValuableCustomers",
+						"sort2 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     deletable:false,",
 						"     insertable:true,",
@@ -1498,7 +1721,7 @@
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
 						"     errorHandlingOption: 'stopOnFirstError') ~> sink7",
-						"aggregate3 sink(allowSchemaDrift: true,",
+						"TopSellingCategoryWise sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     deletable:false,",
 						"     insertable:true,",
@@ -1507,7 +1730,47 @@
 						"     format: 'table',",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError') ~> sink8"
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink8",
+						"TopRatedProducts sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink9",
+						"sort1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink10",
+						"sort3 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink11",
+						"mostValuableCustomers sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink12"
 					]
 				}
 			},
@@ -1515,6 +1778,7 @@
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable10')]",
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable11')]",
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable12')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable25')]",
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable13')]",
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable14')]",
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable15')]",
@@ -1522,7 +1786,11 @@
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable17')]",
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable18')]",
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable19')]",
-				"[concat(variables('factoryId'), '/datasets/AzureSqlTable20')]"
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable20')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable21')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable22')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable23')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable24')]"
 			]
 		},
 		{

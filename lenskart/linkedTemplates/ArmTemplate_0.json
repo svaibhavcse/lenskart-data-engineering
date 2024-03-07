@@ -439,7 +439,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlTable3')]",
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable21')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -451,8 +451,8 @@
 				"type": "AzureSqlTable",
 				"schema": [],
 				"typeProperties": {
-					"schema": "lk",
-					"table": "transaction"
+					"schema": "insights",
+					"table": "TopRatedProducts"
 				}
 			},
 			"dependsOn": [
@@ -460,7 +460,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlTable4')]",
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable22')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -472,8 +472,8 @@
 				"type": "AzureSqlTable",
 				"schema": [],
 				"typeProperties": {
-					"schema": "lk",
-					"table": "customer"
+					"schema": "insights",
+					"table": "lowRatedStores"
 				}
 			},
 			"dependsOn": [
@@ -481,7 +481,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlTable5')]",
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable23')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -491,83 +491,10 @@
 				},
 				"annotations": [],
 				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Brand Name",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Color",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Occasion",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Size",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Width",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Model Name",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Market Price",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Lenskart Price",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Offer Name",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Quantity",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Search Product Name",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Classification",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Average Ratings",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Total No. of Ratings",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Age Group",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Purchase Count",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Wishlist Count",
-						"type": "nvarchar"
-					}
-				],
+				"schema": [],
 				"typeProperties": {
-					"schema": "lk",
-					"table": "products"
+					"schema": "insights",
+					"table": "avgRatingLocation"
 				}
 			},
 			"dependsOn": [
@@ -575,7 +502,28 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlTable6')]",
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable24')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "insights",
+					"table": "MostValuableCustomers"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable25')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -612,54 +560,8 @@
 					}
 				],
 				"typeProperties": {
-					"schema": "lk",
+					"schema": "raw",
 					"table": "customer"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlTable7')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabase1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "Store Name",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Address",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Location",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Timings",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Rating (reviewers)",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Phone",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "lk",
-					"table": "stores"
 				}
 			},
 			"dependsOn": [
