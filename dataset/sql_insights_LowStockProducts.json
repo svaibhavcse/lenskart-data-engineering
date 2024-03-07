@@ -1,5 +1,5 @@
 {
-	"name": "AzureSqlTable15",
+	"name": "sql_insights_LowStockProducts",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureSqlDatabase1",

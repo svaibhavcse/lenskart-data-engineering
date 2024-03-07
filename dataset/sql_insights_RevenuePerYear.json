@@ -1,5 +1,5 @@
 {
-	"name": "AzureSqlTable18",
+	"name": "sql_insights_RevenuePerYear",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureSqlDatabase1",

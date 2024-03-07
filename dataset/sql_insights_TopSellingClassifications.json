@@ -1,5 +1,5 @@
 {
-	"name": "AzureSqlTable14",
+	"name": "sql_insights_TopSellingClassifications",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureSqlDatabase1",

@@ -36,77 +36,77 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable13",
+						"referenceName": "sql_insights_TopRatedStores",
 						"type": "DatasetReference"
 					},
 					"name": "TopRatedSink"
 				},
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable14",
+						"referenceName": "sql_insights_TopSellingClassifications",
 						"type": "DatasetReference"
 					},
 					"name": "sink2"
 				},
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable15",
+						"referenceName": "sql_insights_LowStockProducts",
 						"type": "DatasetReference"
 					},
 					"name": "sink3"
 				},
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable16",
+						"referenceName": "sql_insights_CustomersWithMaxPurchase",
 						"type": "DatasetReference"
 					},
 					"name": "sink4"
 				},
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable17",
+						"referenceName": "sql_insights_TopBuyers",
 						"type": "DatasetReference"
 					},
 					"name": "sink5"
 				},
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable18",
+						"referenceName": "sql_insights_RevenuePerYear",
 						"type": "DatasetReference"
 					},
 					"name": "sink6"
 				},
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable19",
+						"referenceName": "sql_insights_TotalRevenueYearAndCategory",
 						"type": "DatasetReference"
 					},
 					"name": "sink7"
 				},
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable20",
+						"referenceName": "sql_insights_LowSellingProducts",
 						"type": "DatasetReference"
 					},
 					"name": "sink8"
 				},
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable21",
+						"referenceName": "sql_insights_TopRatedProducts",
 						"type": "DatasetReference"
 					},
 					"name": "sink9"
 				},
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable22",
+						"referenceName": "sql_insights_lowRatedStores",
 						"type": "DatasetReference"
 					},
 					"name": "sink10"
 				},
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable23",
+						"referenceName": "sql_insights_avgRatingLocation",
 						"type": "DatasetReference"
 					},
 					"name": "sink11"

@@ -1,5 +1,5 @@
 {
-	"name": "AzureSqlTable16",
+	"name": "sql_insights_CustomersWithMaxPurchase",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureSqlDatabase1",

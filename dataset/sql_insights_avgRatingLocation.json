@@ -1,5 +1,5 @@
 {
-	"name": "AzureSqlTable23",
+	"name": "sql_insights_avgRatingLocation",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureSqlDatabase1",

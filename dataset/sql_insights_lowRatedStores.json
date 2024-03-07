@@ -1,5 +1,5 @@
 {
-	"name": "AzureSqlTable22",
+	"name": "sql_insights_lowRatedStores",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureSqlDatabase1",
