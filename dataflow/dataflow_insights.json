@@ -113,7 +113,7 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable24",
+						"referenceName": "sql_insights_MostValuableCustomers",
 						"type": "DatasetReference"
 					},
 					"name": "sink12"

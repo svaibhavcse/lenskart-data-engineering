@@ -1,5 +1,5 @@
 {
-	"name": "AzureSqlTable24",
+	"name": "sql_insights_MostValuableCustomers",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureSqlDatabase1",
