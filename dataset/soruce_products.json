@@ -1,5 +1,5 @@
 {
-	"name": "products",
+	"name": "soruce_products",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_webscrapping",

@@ -1,5 +1,5 @@
 {
-	"name": "DelimitedText3",
+	"name": "source_customers",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_webscrapping",

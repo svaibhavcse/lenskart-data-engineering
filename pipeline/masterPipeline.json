@@ -5,6 +5,8 @@
 			{
 				"name": "stores",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -45,13 +47,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DelimitedText4",
+						"referenceName": "source_stores",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "AzureSqlTable1",
+						"referenceName": "sql_raw_stores",
 						"type": "DatasetReference"
 					}
 				]
@@ -59,6 +61,8 @@
 			{
 				"name": "products",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -99,13 +103,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "products",
+						"referenceName": "soruce_products",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "AzureSqlTable2",
+						"referenceName": "sql_raw_products",
 						"type": "DatasetReference"
 					}
 				]
@@ -113,6 +117,8 @@
 			{
 				"name": "transaction",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -153,13 +159,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DelimitedText2",
+						"referenceName": "source_transcations",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "AzureSqlTable3",
+						"referenceName": "sql_raw_transactions",
 						"type": "DatasetReference"
 					}
 				]
@@ -167,6 +173,8 @@
 			{
 				"name": "customer",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -207,13 +215,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DelimitedText3",
+						"referenceName": "source_customers",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "AzureSqlTable4",
+						"referenceName": "sql_raw_customers",
 						"type": "DatasetReference"
 					}
 				]
@@ -221,6 +229,8 @@
 			{
 				"name": "dataflow_insights",
 				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "stores",

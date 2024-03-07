@@ -6,28 +6,28 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable10",
+						"referenceName": "sql_raw_transactions",
 						"type": "DatasetReference"
 					},
 					"name": "transaction"
 				},
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable11",
+						"referenceName": "sql_raw_products",
 						"type": "DatasetReference"
 					},
 					"name": "product"
 				},
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable12",
+						"referenceName": "sql_raw_stores",
 						"type": "DatasetReference"
 					},
 					"name": "stores"
 				},
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable25",
+						"referenceName": "sql_raw_customers",
 						"type": "DatasetReference"
 					},
 					"name": "customers"
