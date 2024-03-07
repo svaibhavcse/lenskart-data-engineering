@@ -31,7 +31,7 @@
 		],
 		"typeProperties": {
 			"schema": "raw",
-			"table": "transaction"
+			"table": "transactions"
 		}
 	}
 }
