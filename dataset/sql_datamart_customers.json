@@ -1,0 +1,16 @@
+{
+	"name": "sql_datamart_customers",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "datamart",
+			"table": "customers"
+		}
+	}
+}

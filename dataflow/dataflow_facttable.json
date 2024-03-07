@@ -1,0 +1,162 @@
+{
+	"name": "dataflow_facttable",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "sql_raw_customers",
+						"type": "DatasetReference"
+					},
+					"name": "Customers"
+				},
+				{
+					"dataset": {
+						"referenceName": "sql_raw_products",
+						"type": "DatasetReference"
+					},
+					"name": "Products"
+				},
+				{
+					"dataset": {
+						"referenceName": "sql_raw_transactions",
+						"type": "DatasetReference"
+					},
+					"name": "Transactions"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "sql_datamart_factTable",
+						"type": "DatasetReference"
+					},
+					"name": "FactTable"
+				},
+				{
+					"dataset": {
+						"referenceName": "sql_datamart_products",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "sql_datamart_customers",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
+				}
+			],
+			"transformations": [
+				{
+					"name": "join1"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "join2"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          customer_id as string,",
+				"          first_name as string,",
+				"          last_name as string,",
+				"          email as string,",
+				"          phone_number as string,",
+				"          address as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> Customers",
+				"source(output(",
+				"          id as string,",
+				"          Brand_Name as string,",
+				"          Color as string,",
+				"          Occasion as string,",
+				"          Size as string,",
+				"          Width as string,",
+				"          Model_Name as string,",
+				"          Market_Price as string,",
+				"          Lenskart_Price as integer,",
+				"          Offer_Name as string,",
+				"          Quantity as string,",
+				"          Suited_For as string,",
+				"          {Search_Product Name} as string,",
+				"          Classification as string,",
+				"          Average_Ratings as string,",
+				"          Total_No_of_Ratings as string,",
+				"          Purchase_Count as string,",
+				"          Wishlist_Count as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> Products",
+				"source(output(",
+				"          customer_id as string,",
+				"          product_id as string,",
+				"          quantity as integer,",
+				"          transaction_date as string,",
+				"          transaction_id as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> Transactions",
+				"Transactions, Customers join(Transactions@customer_id == Customers@customer_id,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"join2 select(mapColumn(",
+				"          transaction_id,",
+				"          customer_id = Transactions@customer_id,",
+				"          product_id,",
+				"          quantity = Transactions@quantity",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"join1, Products join(product_id == id,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join2",
+				"select1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> FactTable",
+				"Products sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1",
+				"Customers sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
+			]
+		}
+	}
+}
