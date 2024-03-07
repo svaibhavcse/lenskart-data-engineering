@@ -67,6 +67,63 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/prep_products')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "prep",
+					"table": "products"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/prep_customers')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "prep",
+					"table": "customers"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/prep_transactions')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "prep",
+					"table": "transaction"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/dataflow_insights')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -516,6 +573,158 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/dataflow_cleansing')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "sql_raw_products",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						},
+						{
+							"dataset": {
+								"referenceName": "sql_raw_customers",
+								"type": "DatasetReference"
+							},
+							"name": "source2"
+						},
+						{
+							"dataset": {
+								"referenceName": "sql_raw_transactions",
+								"type": "DatasetReference"
+							},
+							"name": "source3"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "prep_products",
+								"type": "DatasetReference"
+							},
+							"name": "sinkProducts"
+						},
+						{
+							"dataset": {
+								"referenceName": "prep_customers",
+								"type": "DatasetReference"
+							},
+							"name": "sinkCustomers"
+						},
+						{
+							"dataset": {
+								"referenceName": "prep_transactions",
+								"type": "DatasetReference"
+							},
+							"name": "sinkTransactions"
+						}
+					],
+					"transformations": [
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          id as string,",
+						"          Brand_Name as string,",
+						"          Color as string,",
+						"          Occasion as string,",
+						"          Size as string,",
+						"          Width as string,",
+						"          Model_Name as string,",
+						"          Market_Price as string,",
+						"          Lenskart_Price as string,",
+						"          Offer_Name as string,",
+						"          Quantity as string,",
+						"          Suited_For as string,",
+						"          {Search_Product Name} as string,",
+						"          Classification as string,",
+						"          Average_Ratings as string,",
+						"          Total_No_of_Ratings as string,",
+						"          Purchase_Count as string,",
+						"          Wishlist_Count as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> source1",
+						"source(output(",
+						"          customer_id as string,",
+						"          first_name as string,",
+						"          last_name as string,",
+						"          email as string,",
+						"          phone_number as string,",
+						"          address as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> source2",
+						"source(output(",
+						"          customer_id as string,",
+						"          product_id as string,",
+						"          quantity as string,",
+						"          transaction_date as string,",
+						"          transaction_id as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> source3",
+						"source1 derive(Occasion = \r",
+						"coalesce(Occasion,'Any Occasion',Occasion),",
+						"          Color = coalesce(Color,'No Color Available',Color),",
+						"          Size = coalesce(Size,'No Size Available',Size),",
+						"          Width = coalesce(Width,'No Width Available',Width),",
+						"          Offer_Name = coalesce(Offer_Name,'No Offer',Offer_Name),",
+						"          Suited_For = coalesce(Suited_For,'Any age group',Suited_For)) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sinkProducts",
+						"source2 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sinkCustomers",
+						"source3 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sinkTransactions"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/prep_products')]",
+				"[concat(variables('factoryId'), '/datasets/prep_customers')]",
+				"[concat(variables('factoryId'), '/datasets/prep_transactions')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/masterPipeline')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -760,25 +969,7 @@
 						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [
 							{
-								"activity": "stores",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "products",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "transaction",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "customer",
+								"activity": "dataflow_cleansing",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -823,6 +1014,65 @@
 							},
 							"traceLevel": "Fine"
 						}
+					},
+					{
+						"name": "dataflow_cleansing",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "stores",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "products",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "transaction",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "customer",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflow_cleansing",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"source2": {},
+									"source3": {},
+									"sinkProducts": {},
+									"sinkCustomers": {},
+									"sinkTransactions": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
 					}
 				],
 				"policy": {
@@ -834,7 +1084,8 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/source_stores')]",
 				"[concat(variables('factoryId'), '/datasets/soruce_products')]",
-				"[concat(variables('factoryId'), '/dataflows/dataflow_insights')]"
+				"[concat(variables('factoryId'), '/dataflows/dataflow_insights')]",
+				"[concat(variables('factoryId'), '/dataflows/dataflow_cleansing')]"
 			]
 		}
 	]
