@@ -219,7 +219,7 @@
 				]
 			},
 			{
-				"name": "dataflow1",
+				"name": "dataflow_insights",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
@@ -257,7 +257,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow1",
+						"referenceName": "dataflow_insights",
 						"type": "DataFlowReference"
 					},
 					"compute": {

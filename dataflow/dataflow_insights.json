@@ -1,5 +1,5 @@
 {
-	"name": "dataflow1",
+	"name": "dataflow_insights",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -24,6 +24,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "stores"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable25",
+						"type": "DatasetReference"
+					},
+					"name": "customers"
 				}
 			],
 			"sinks": [
@@ -82,6 +89,34 @@
 						"type": "DatasetReference"
 					},
 					"name": "sink8"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable21",
+						"type": "DatasetReference"
+					},
+					"name": "sink9"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable22",
+						"type": "DatasetReference"
+					},
+					"name": "sink10"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable23",
+						"type": "DatasetReference"
+					},
+					"name": "sink11"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable24",
+						"type": "DatasetReference"
+					},
+					"name": "sink12"
 				}
 			],
 			"transformations": [
@@ -122,7 +157,31 @@
 					"name": "TopRatedStore"
 				},
 				{
+					"name": "TopSellingCategoryWise"
+				},
+				{
+					"name": "TopRatedProducts"
+				},
+				{
+					"name": "StoresWithLowRating"
+				},
+				{
+					"name": "sort1"
+				},
+				{
+					"name": "sort2"
+				},
+				{
 					"name": "aggregate3"
+				},
+				{
+					"name": "sort3"
+				},
+				{
+					"name": "aggregate4"
+				},
+				{
+					"name": "mostValuableCustomers"
 				}
 			],
 			"scriptLines": [
@@ -173,6 +232,18 @@
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> stores",
+				"source(output(",
+				"          customer_id as string,",
+				"          first_name as string,",
+				"          last_name as string,",
+				"          email as string,",
+				"          phone_number as string,",
+				"          address as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> customers",
 				"transaction, product join(product_id == id,",
 				"     joinType:'inner',",
 				"     matchType:'exact',",
@@ -211,8 +282,25 @@
 				"product aggregate(groupBy(Classification),",
 				"     Brand_Name = min(Brand_Name),",
 				"          Model_Name = min(Model_Name),",
-				"          Purchase_Count = min(Purchase_Count)) ~> aggregate3",
-				"TopRatedStore sink(allowSchemaDrift: true,",
+				"          Purchase_Count = min(Purchase_Count)) ~> TopSellingCategoryWise",
+				"product aggregate(groupBy(Classification),",
+				"     Brand_Name = max(Brand_Name),",
+				"          Model_Name = max(Model_Name),",
+				"          Top_Rated_Products = max(Average_Ratings),",
+				"          Total_No_of_Ratings = max(Total_No_of_Ratings)) ~> TopRatedProducts",
+				"derivedColumn2 aggregate(groupBy(Location),",
+				"     low_rated_stores = min(rating),",
+				"          Store_Name = min(Store_Name),",
+				"          Address = min(Address)) ~> StoresWithLowRating",
+				"StoresWithLowRating sort(asc(low_rated_stores, true)) ~> sort1",
+				"TopRatedStore sort(desc(rating, true)) ~> sort2",
+				"derivedColumn2 aggregate(groupBy(Location),",
+				"     Average_rating = round(avg(rating), 2)) ~> aggregate3",
+				"aggregate3 sort(asc(Average_rating, true)) ~> sort3",
+				"join2 aggregate(groupBy(customer_id),",
+				"     purchased_amount = sum(transaction@quantity * Lenskart_Price)) ~> aggregate4",
+				"aggregate4 sort(desc(purchased_amount, true)) ~> mostValuableCustomers",
+				"sort2 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
 				"     insertable:true,",
@@ -282,7 +370,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError') ~> sink7",
-				"aggregate3 sink(allowSchemaDrift: true,",
+				"TopSellingCategoryWise sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
 				"     insertable:true,",
@@ -291,7 +379,47 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> sink8"
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink8",
+				"TopRatedProducts sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink9",
+				"sort1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink10",
+				"sort3 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink11",
+				"mostValuableCustomers sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink12"
 			]
 		}
 	}
